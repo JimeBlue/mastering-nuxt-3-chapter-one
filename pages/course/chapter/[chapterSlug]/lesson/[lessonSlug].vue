@@ -22,6 +22,7 @@
     </div>
     <VideoPlayer v-if="lesson.videoId" :videoId="lesson.videoId" />
     <p>{{ lesson.text }}</p>
+
     <LessonCompleteButton
       :model-value="isLessonComplete"
       @update:model-value="toggleComplete"
@@ -53,10 +54,8 @@ const title = computed(() => {
 useHead({
   title,
 });
-// share the state of progress acrross components
-const progress = useState('progress', () => {
-  return [];
-});
+// Sync state of progress to local storage in order for it to persist page refreshes
+const progress = useLocalStorage('progress', []);
 
 const isLessonComplete = computed(() => {
   if (!progress.value[chapter.value.number - 1]) {
